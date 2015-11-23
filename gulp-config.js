@@ -17,8 +17,7 @@ module.exports = {
 			img:   'build/img/',
 			font:  'build/font/',
 			libs:  'build/js/libs/'
-		},
-		proxy: 'localhost/curveEditor/build'
+		}
 	},
 	options: {
 		cssnext: {
