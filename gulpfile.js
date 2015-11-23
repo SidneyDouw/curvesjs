@@ -25,7 +25,7 @@ var makeSourcemap = util.env.sm ? true : false;
 var buildScript = {
     paths: {
     	jquery: "../../bower_components/jquery/dist/jquery.min",
-    	almond: "../../bower_components/almond/dist/almond"
+    	almond: "../../bower_components/almond/almond"
     },
 
     include: ['almond', 'script'],
@@ -40,13 +40,13 @@ var buildScript = {
 var buildLib1 = {
     paths: {
     	jquery: "../../bower_components/jquery/dist/jquery.min",
-    	almond: "../../bower_components/almond/dist/almond"
+    	almond: "../../bower_components/almond/almond"
     },
 
     include: ['almond', 'main'],
     exclude: ['jquery'],
 
-    out: 'curveEditor.min.js',
+    out: 'curves.min.js',
     wrap: {
     	startFile: "wrap.start",
     	endFile: "wrap.end"
@@ -55,7 +55,7 @@ var buildLib1 = {
 var buildLib2 = {
     paths: {
     	jquery: "../../bower_components/jquery/dist/jquery.min",
-    	almond: "../../bower_components/almond/dist/almond"
+    	almond: "../../bower_components/almond/almond"
     },
 
     include: ['almond', 'main'],
@@ -63,7 +63,7 @@ var buildLib2 = {
 
     optimize: 'none',
 
-    out: 'curveEditor.js',
+    out: 'curves.js',
     wrap: {
     	startFile: "wrap.start",
     	endFile: "wrap.end"
@@ -126,8 +126,8 @@ gulp.task('js', function() {
         .pipe(browserSync.reload({stream: true}));
 });
 gulp.task('buildLib', function() {	
-		gulp.src('src/js/main.js')
-		.pipe(sourcemaps.init())
+	gulp.src('src/js/main.js')
+	.pipe(sourcemaps.init())
         .pipe(rjs(buildLib1))
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('dist/'));
