@@ -2,7 +2,7 @@ define(['modules/BezierPoint', 'jquery'], function(BezierPoint, $){
 
 	function Line(context, interval, cpDist) {
 
-		this.cpDist = cpDist;
+		this.cpDist = cpDist ? cpDist : context.canvas.width * 0.2;
 
 		this.points = [
 			new BezierPoint(0, context.canvas.height, context, cpDist),
@@ -433,8 +433,6 @@ define(['modules/BezierPoint', 'jquery'], function(BezierPoint, $){
 		}
 
 	};
-
-
 
 
 	var keys = [];
