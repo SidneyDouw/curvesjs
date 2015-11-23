@@ -1,6 +1,6 @@
 define(['modules/BezierPoint', 'jquery'], function(BezierPoint, $){
 
-	function Line(context, interval, cpDist) {
+	function Curve(context, interval, cpDist) {
 
 		this.cpDist = cpDist ? cpDist : context.canvas.width * 0.2;
 
@@ -20,7 +20,7 @@ define(['modules/BezierPoint', 'jquery'], function(BezierPoint, $){
 		this.draw();
 
 	}
-	Line.prototype.xGetY = function(frame) {
+	Curve.prototype.xGetY = function(frame) {
 
 		var tolerance = 0.0001;
 		
@@ -52,7 +52,7 @@ define(['modules/BezierPoint', 'jquery'], function(BezierPoint, $){
 		return this.lookupY[key];
 
 	};
-	Line.prototype.createLUT = function() {
+	Curve.prototype.createLUT = function() {
 		
 		this.lookupX = [];
 		this.lookupY = [];
@@ -74,7 +74,7 @@ define(['modules/BezierPoint', 'jquery'], function(BezierPoint, $){
 		}
 
 	};
-	Line.prototype.canvasEvents = function() {
+	Curve.prototype.canvasEvents = function() {
 
 		var x,
 			y,
@@ -360,7 +360,7 @@ define(['modules/BezierPoint', 'jquery'], function(BezierPoint, $){
 		});
 
 	};
-	Line.prototype.addPoint = function(x, y) {
+	Curve.prototype.addPoint = function(x, y) {
 		
 		this.points.push(new BezierPoint(x, y, this.ctx, this.cpDist));
 
@@ -376,14 +376,14 @@ define(['modules/BezierPoint', 'jquery'], function(BezierPoint, $){
 		}
 
 	};
-	Line.prototype.setColor = function(color) {
+	Curve.prototype.setColor = function(color) {
 		
 		for (var i = 0; i > this.points.length; i++) {
 			this.points[i].setColor(color);
 		}
 
 	};
-	Line.prototype.draw = function() {
+	Curve.prototype.draw = function() {
 		
 		this.ctx.clearRect(0, 0, this.cw, this.ch);
 		
@@ -443,6 +443,6 @@ define(['modules/BezierPoint', 'jquery'], function(BezierPoint, $){
 		delete keys[e.keyCode];
 	});
 
-	return Line;
+	return Curve;
 
 });
