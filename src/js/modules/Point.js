@@ -4,10 +4,11 @@ define(function(){
 		this.x = x;
 		this.y = y;
 		this.r = 2;
+		this.color = '#f00';
 		this.ctx = context;
 	}
 	Point.prototype.draw = function() {
-		this.ctx.fillStyle = '#f00';
+		this.ctx.fillStyle = this.color;
 		this.ctx.beginPath();
 		this.ctx.arc(this.x, this.y, this.r, 0, Math.PI*2, false);
 		this.ctx.closePath();
