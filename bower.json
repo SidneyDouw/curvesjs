@@ -25,6 +25,9 @@
   "overrides": {
     "jquery": {
       "main": "dist/*.min.js"
+    },
+    "almond": {
+      "ignore": true
     }
   }
 }
