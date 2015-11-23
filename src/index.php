@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Curve Editor</title>
+	<title>Curves</title>
 
 	<link rel="stylesheet" type="text/css" href="css/styles.min.css">
 
