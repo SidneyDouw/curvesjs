@@ -376,6 +376,13 @@ define(['modules/BezierPoint', 'jquery'], function(BezierPoint, $){
 		}
 
 	};
+	Line.prototype.setColor = function(color) {
+		
+		for (var i = 0; i > this.points.length; i++) {
+			this.points[i].setColor(color);
+		}
+
+	};
 	Line.prototype.draw = function() {
 		
 		this.ctx.clearRect(0, 0, this.cw, this.ch);
