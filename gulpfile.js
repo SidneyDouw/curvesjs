@@ -156,12 +156,16 @@ gulp.task('build', ['delete'], function(){
 	gulp.start(['index', 'php', 'css', 'js', 'img', 'font', 'libs']);
 });
 
-gulp.task('browserSync', function(){
+gulp.task('browserSync', ['build'], function(){
+	php.server({
+		base: './build',
+		port: 3030,
+		keepalive: true
+	});
 	browserSync({
-		proxy: config.paths.proxy,
-        port: 3000,
-        open: true,
-        notify: false
+		proxy: 'localhost:3030',
+	        browser: 'google chrome',
+	        notify: false
 	});
 });
 
