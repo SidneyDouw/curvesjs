@@ -1,4 +1,4 @@
-require(['modules/Line'], function(Line){
+require(['modules/Curve'], function(Curve){
 
 	var ctx = document.querySelector('canvas').getContext("2d");
 		ctx.canvas.width = 280*3;
@@ -6,9 +6,9 @@ require(['modules/Line'], function(Line){
 
 	var frames = 120;
 
-	line = new Line(ctx, frames, 168);
+	curve = new Curve(ctx, frames, 168);
 
-	var	div = document.querySelector('div');
+	var div = document.querySelector('div');
 		
 	frame = -1;
 
@@ -19,7 +19,7 @@ require(['modules/Line'], function(Line){
 		frame++;
 		if (frame > frames) frame = 0;
 
-		div.style.left = 100+((window.innerWidth-300) * line.xGetY(frame))+'px';
+		div.style.left = 100+((window.innerWidth-300) * curve.xGetY(frame))+'px';
 	}
 
 	function loop() {
