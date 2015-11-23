@@ -1,5 +1,5 @@
-define(['modules/Line'], function(Line){
+define(['modules/Curve'], function(Curve){
 	
-	return Line;
+	return Curve;
 
 });
