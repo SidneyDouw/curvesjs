@@ -38,6 +38,11 @@ define(['modules/Point'], function(Point){
 		}
 
 	};
+	BezierPoint.prototype.setColor = function(color) {
+		this.position.color = color;
+		this.cp1.color = color;
+		this.cp2.color = color;
+	};
 	BezierPoint.prototype.draw = function() {
 
 		this.ctx.lineWidth = 0.2;
