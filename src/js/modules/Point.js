@@ -1,10 +1,10 @@
 define(function(){
 
-	function Point(x, y, context) {
+	function Point(x, y, color, context) {
 		this.x = x;
 		this.y = y;
 		this.r = 2;
-		this.color = '#f00';
+		this.color = color;
 		this.ctx = context;
 	}
 	Point.prototype.draw = function() {

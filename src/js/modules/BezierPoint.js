@@ -1,12 +1,14 @@
 define(['modules/Point'], function(Point){
 
-	function BezierPoint(x, y, context, cpDist) {
+	function BezierPoint(x, y, context, color, cpDist) {
 
 		this.cpDist = cpDist;
 
-		this.position = new Point(x, y, context);
-		this.cp1 = new Point(x-this.cpDist, y, context);
-		this.cp2 = new Point(x+this.cpDist, y, context);
+		this.color = color;
+
+		this.position = new Point(x, y, this.color, context);
+		this.cp1 = new Point(x-this.cpDist, y, this.color, context);
+		this.cp2 = new Point(x+this.cpDist, y, this.color, context);
 
 		this.ctx = context;
 		this.r = 2;

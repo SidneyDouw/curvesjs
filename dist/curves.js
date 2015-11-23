@@ -441,14 +441,15 @@ define("almond", function(){});
 
 define('modules/Point',[],function(){
 
-	function Point(x, y, context) {
+	function Point(x, y, color, context) {
 		this.x = x;
 		this.y = y;
 		this.r = 2;
+		this.color = color;
 		this.ctx = context;
 	}
 	Point.prototype.draw = function() {
-		this.ctx.fillStyle = '#f00';
+		this.ctx.fillStyle = this.color;
 		this.ctx.beginPath();
 		this.ctx.arc(this.x, this.y, this.r, 0, Math.PI*2, false);
 		this.ctx.closePath();
@@ -458,15 +459,18 @@ define('modules/Point',[],function(){
 	return Point;
 
 });
+
 define('modules/BezierPoint',['modules/Point'], function(Point){
 
-	function BezierPoint(x, y, context, cpDist) {
+	function BezierPoint(x, y, context, color, cpDist) {
 
 		this.cpDist = cpDist;
 
-		this.position = new Point(x, y, context);
-		this.cp1 = new Point(x-this.cpDist, y, context);
-		this.cp2 = new Point(x+this.cpDist, y, context);
+		this.color = color;
+
+		this.position = new Point(x, y, this.color, context);
+		this.cp1 = new Point(x-this.cpDist, y, this.color, context);
+		this.cp2 = new Point(x+this.cpDist, y, this.color, context);
 
 		this.ctx = context;
 		this.r = 2;
@@ -498,6 +502,11 @@ define('modules/BezierPoint',['modules/Point'], function(Point){
 		}
 
 	};
+	BezierPoint.prototype.setColor = function(color) {
+		this.position.color = color;
+		this.cp1.color = color;
+		this.cp2.color = color;
+	};
 	BezierPoint.prototype.draw = function() {
 
 		this.ctx.lineWidth = 0.2;
@@ -521,15 +530,18 @@ define('modules/BezierPoint',['modules/Point'], function(Point){
 	return BezierPoint;
 
 });
-define('modules/Line',['modules/BezierPoint', 'jquery'], function(BezierPoint, $){
 
-	function Line(context, interval, cpDist) {
+define('modules/Curve',['modules/BezierPoint', 'jquery'], function(BezierPoint, $){
 
-		this.cpDist = cpDist;
+	function Curve(context, interval, cpDist) {
+
+		this.cpDist = cpDist ? cpDist : context.canvas.width * 0.2;
+
+		this.color = '#f00';
 
 		this.points = [
-			new BezierPoint(0, context.canvas.height, context, cpDist),
-			new BezierPoint(context.canvas.width, 0, context, cpDist)
+			new BezierPoint(0, context.canvas.height, context, this.color, this.cpDist),
+			new BezierPoint(context.canvas.width, 0, context, this.color, this.cpDist)
 		];
 
 		this.ctx = context;
@@ -543,7 +555,7 @@ define('modules/Line',['modules/BezierPoint', 'jquery'], function(BezierPoint, $
 		this.draw();
 
 	}
-	Line.prototype.xGetY = function(frame) {
+	Curve.prototype.xGetY = function(frame) {
 
 		var tolerance = 0.0001;
 		
@@ -575,7 +587,7 @@ define('modules/Line',['modules/BezierPoint', 'jquery'], function(BezierPoint, $
 		return this.lookupY[key];
 
 	};
-	Line.prototype.createLUT = function() {
+	Curve.prototype.createLUT = function() {
 		
 		this.lookupX = [];
 		this.lookupY = [];
@@ -597,7 +609,7 @@ define('modules/Line',['modules/BezierPoint', 'jquery'], function(BezierPoint, $
 		}
 
 	};
-	Line.prototype.canvasEvents = function() {
+	Curve.prototype.canvasEvents = function() {
 
 		var x,
 			y,
@@ -883,9 +895,9 @@ define('modules/Line',['modules/BezierPoint', 'jquery'], function(BezierPoint, $
 		});
 
 	};
-	Line.prototype.addPoint = function(x, y) {
+	Curve.prototype.addPoint = function(x, y) {
 		
-		this.points.push(new BezierPoint(x, y, this.ctx, this.cpDist));
+		this.points.push(new BezierPoint(x, y, this.ctx, this.color, this.cpDist));
 
 		this.points.sort(function(a, b){
 			return a.position.x - b.position.x;
@@ -899,7 +911,16 @@ define('modules/Line',['modules/BezierPoint', 'jquery'], function(BezierPoint, $
 		}
 
 	};
-	Line.prototype.draw = function() {
+	Curve.prototype.setColor = function(color) {
+		
+		for (var i = 0; i < this.points.length; i++) {
+			this.points[i].setColor(color);
+			this.color = color;
+		}
+		this.draw();
+
+	};
+	Curve.prototype.draw = function() {
 		
 		this.ctx.clearRect(0, 0, this.cw, this.ch);
 		
@@ -951,8 +972,6 @@ define('modules/Line',['modules/BezierPoint', 'jquery'], function(BezierPoint, $
 	};
 
 
-
-
 	var keys = [];
 	window.addEventListener('keydown', function(e){
 		keys[e.keyCode] = true;
@@ -961,21 +980,19 @@ define('modules/Line',['modules/BezierPoint', 'jquery'], function(BezierPoint, $
 		delete keys[e.keyCode];
 	});
 
-	return Line;
+	return Curve;
 
 });
-define('main',['modules/Line'], function(Line){
+
+define('main',['modules/Curve'], function(Curve){
 	
-	return Line;
+	return Curve;
 
 });
-// Register in the values from the outer closure for common dependencies
-  // as local almond modules
+
   define('jquery', function() {
     return $;
   });
 
-  // Use almond's special top level synchronous require to trigger factory
-  // functions, get the final module, and export it as the public api.
   return require('main');
 }));

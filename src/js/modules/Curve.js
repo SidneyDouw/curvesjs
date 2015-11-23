@@ -4,9 +4,11 @@ define(['modules/BezierPoint', 'jquery'], function(BezierPoint, $){
 
 		this.cpDist = cpDist ? cpDist : context.canvas.width * 0.2;
 
+		this.color = '#f00';
+
 		this.points = [
-			new BezierPoint(0, context.canvas.height, context, cpDist),
-			new BezierPoint(context.canvas.width, 0, context, cpDist)
+			new BezierPoint(0, context.canvas.height, context, this.color, this.cpDist),
+			new BezierPoint(context.canvas.width, 0, context, this.color, this.cpDist)
 		];
 
 		this.ctx = context;
@@ -362,7 +364,7 @@ define(['modules/BezierPoint', 'jquery'], function(BezierPoint, $){
 	};
 	Curve.prototype.addPoint = function(x, y) {
 		
-		this.points.push(new BezierPoint(x, y, this.ctx, this.cpDist));
+		this.points.push(new BezierPoint(x, y, this.ctx, this.color, this.cpDist));
 
 		this.points.sort(function(a, b){
 			return a.position.x - b.position.x;
@@ -378,9 +380,11 @@ define(['modules/BezierPoint', 'jquery'], function(BezierPoint, $){
 	};
 	Curve.prototype.setColor = function(color) {
 		
-		for (var i = 0; i > this.points.length; i++) {
+		for (var i = 0; i < this.points.length; i++) {
 			this.points[i].setColor(color);
+			this.color = color;
 		}
+		this.draw();
 
 	};
 	Curve.prototype.draw = function() {

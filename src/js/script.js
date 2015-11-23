@@ -6,7 +6,7 @@ require(['modules/Curve'], function(Curve){
 
 	var frames = 120;
 
-	curve = new Curve(ctx, frames, 168);
+	curve = new Curve(ctx, frames);
 
 	var div = document.querySelector('div');
 		
