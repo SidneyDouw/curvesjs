@@ -4,12 +4,17 @@ require(['modules/Curve'], function(Curve){
 		ctx.canvas.width = 280*3;
 		ctx.canvas.height = 140*3;
 
-	var frames = 120;
+	var frames = 60;
 
-	curve = new Curve(ctx, frames);
+	var curve = new Curve(ctx, frames);
 
 	var div = document.querySelector('div');
-		
+	var span = document.querySelector('span');
+
+	curve.on('mousemove', function() {
+		span.innerHTML = 'X: '+this.mouseX+', Y: '+this.mouseY;
+	});
+
 	frame = -1;
 
 	loop();

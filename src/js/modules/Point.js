@@ -1,9 +1,9 @@
 define(function(){
 
-	function Point(x, y, color, context) {
+	function Point(x, y, color, size, context) {
 		this.x = x;
 		this.y = y;
-		this.r = 2;
+		this.r = size/2;
 		this.color = color;
 		this.ctx = context;
 	}

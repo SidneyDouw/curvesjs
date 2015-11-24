@@ -4,6 +4,6 @@
     define(['jquery'], factory);
   } else {
     // Browser globals.
-    root.script = factory(root.$);
+    root.Curve = factory(root.$);
   }
 }(this, function($) {

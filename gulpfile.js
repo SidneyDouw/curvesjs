@@ -11,7 +11,7 @@ var gulp 			= require('gulp'),
 	minifyCss		= require('gulp-minify-css'),
 	jshint			= require('gulp-jshint'),
 	jsStylish 		= require('jshint-stylish'),
-	mainBowerFiles 		= require('main-bower-files'),
+	mainBowerFiles 	= require('main-bower-files'),
 	php 			= require('gulp-connect-php'),
 	browserSync		= require('browser-sync'),
 	config 			= require('./gulp-config.js'),
@@ -164,8 +164,8 @@ gulp.task('browserSync', ['build'], function(){
 	});
 	browserSync({
 		proxy: 'localhost:3030',
-	        browser: 'google chrome',
-	        notify: false
+	    browser: 'google chrome',
+	    notify: false
 	});
 });
 

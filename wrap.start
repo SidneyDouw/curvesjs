@@ -1,9 +1,7 @@
 (function (root, factory) {
-  if (typeof define === 'function' && define.amd) {
-    // AMD.
-    define(['jquery'], factory);
-  } else {
-    // Browser globals.
-    root.main = factory(root.$);
-  }
-}(this, function($) {
+	if (typeof define === 'function' && define.amd) {
+		define([], factory);
+	} else {
+		root.Curve = factory();
+	}
+}(this, function() {

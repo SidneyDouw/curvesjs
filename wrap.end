@@ -1,6 +1,2 @@
-  define('jquery', function() {
-    return $;
-  });
-
-  return require('main');
+	return require('main');
 }));

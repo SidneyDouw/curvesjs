@@ -1,19 +1,28 @@
-define(['modules/BezierPoint', 'jquery'], function(BezierPoint, $){
+define(['modules/BezierPoint'], function(BezierPoint){
 
 	function Curve(context, interval, cpDist) {
 
 		this.cpDist = cpDist ? cpDist : context.canvas.width * 0.2;
 
-		this.color = '#f00';
+		this.pointColor = '#f00';
+		this.pointSize = 4;
+
+		this.lineColor = '#fff';
+		this.lineWidth = 1;
 
 		this.points = [
-			new BezierPoint(0, context.canvas.height, context, this.color, this.cpDist),
-			new BezierPoint(context.canvas.width, 0, context, this.color, this.cpDist)
+			new BezierPoint(0, context.canvas.height, context, this.pointColor, this.pointSize, this.cpDist),
+			new BezierPoint(context.canvas.width, 0, context, this.pointColor, this.pointSize, this.cpDist)
 		];
 
 		this.ctx = context;
 		this.cw = context.canvas.width;
 		this.ch = context.canvas.height;
+
+		this.mouseX = 0;
+		this.mouseY = 0;
+
+		this.events = {};
 
 		this.interval = interval;
 
@@ -76,6 +85,9 @@ define(['modules/BezierPoint', 'jquery'], function(BezierPoint, $){
 		}
 
 	};
+	Curve.prototype.on = function(event, func) {
+		this.events['on'+event] = func.bind(this);
+	};
 	Curve.prototype.canvasEvents = function() {
 
 		var x,
@@ -87,10 +99,13 @@ define(['modules/BezierPoint', 'jquery'], function(BezierPoint, $){
 
 		var _this = this;
 		
-		$(this.ctx.canvas).on('mousemove', function(evt){
+		this.ctx.canvas.addEventListener('mousemove', function(evt){
 
-			x = evt.clientX - $(this).offset().left;
-			y = evt.clientY - $(this).offset().top;
+			x = evt.clientX - this.offsetLeft;
+			y = evt.clientY - this.offsetTop;
+
+			_this.mouseX = x;
+			_this.mouseY = y;
 
 			for (var i = 0; i < _this.points.length; i++) {
 				var p = _this.points[i];
@@ -98,26 +113,26 @@ define(['modules/BezierPoint', 'jquery'], function(BezierPoint, $){
 				if (!draging) {
 
 					dist = Math.sqrt((x-p.position.x)*(x-p.position.x) + (y-p.position.y)*(y-p.position.y));
-					if (dist <= 5) {
-						$(this).css('cursor', 'pointer');
+					if (dist <= _this.pointSize/2+2) {
+						this.style.cursor = 'pointer';
 						dragReady = i;
 						break;
 					} else {
 						dist = Math.sqrt((x-p.cp1.x)*(x-p.cp1.x) + (y-p.cp1.y)*(y-p.cp1.y));
-						if (dist <= 5) {
-							$(this).css('cursor', 'pointer');
+						if (dist <= _this.pointSize/2+2) {
+							this.style.cursor = 'pointer';
 							dragReady = i;
 							dragCP = 'cp1';
 							break;
 						} else {
 							dist = Math.sqrt((x-p.cp2.x)*(x-p.cp2.x) + (y-p.cp2.y)*(y-p.cp2.y));
-							if (dist <= 5) {
-								$(this).css('cursor', 'pointer');
+							if (dist <= _this.pointSize/2+2) {
+								this.style.cursor = 'pointer';
 								dragReady = i;
 								dragCP = 'cp2';
 								break;
 							} else {
-								$(this).css('cursor', 'initial');
+								this.style.cursor = 'initial';
 								dragReady = false;
 								dragCP = false;
 							}
@@ -138,8 +153,6 @@ define(['modules/BezierPoint', 'jquery'], function(BezierPoint, $){
 				x = deltaW * posX;
 				y = deltaH * posY;
 			}
-
-			$('span').text('X: '+ x +', Y: '+ y);
 
 			if (draging) {
 				if (dragCP == 'cp1') {
@@ -199,11 +212,14 @@ define(['modules/BezierPoint', 'jquery'], function(BezierPoint, $){
 					}
 
 				}
-
+				_this.events.ondrag ? _this.events.ondrag() : null;
 				_this.draw();
 			}
 
-		}).on('mousedown', function(evt){
+			_this.events.onmousemove ? _this.events.onmousemove() : null;
+
+		});
+		this.ctx.canvas.addEventListener('mousedown', function(evt){
 			evt.preventDefault();
 
 			if (dragReady || dragReady === 0) {
@@ -212,12 +228,13 @@ define(['modules/BezierPoint', 'jquery'], function(BezierPoint, $){
 				if (dist > 5) {
 					dragReady = _this.addPoint(x, y);
 					draging = true;
-					$(this).css('cursor', 'pointer');
+					this.style.cursor = 'pointer';
 					_this.draw();
 				}
 			}
 
-		}).on('mouseup', function(evt){
+		});
+		this.ctx.canvas.addEventListener('mouseup', function(evt){
 
 			draging = false;
 			if (dist > 5) {
@@ -227,8 +244,8 @@ define(['modules/BezierPoint', 'jquery'], function(BezierPoint, $){
 			for (var i = 0; i < _this.points.length; i++) {
 				var p = _this.points[i];
 				dist = Math.sqrt((x-p.position.x)*(x-p.position.x) + (y-p.position.y)*(y-p.position.y));
-				if (dist <= 5) {
-					$(this).css('cursor', 'pointer');
+				if (dist <= _this.pointSize/2+2) {
+					this.style.cursor = 'pointer';
 					dragReady = i;
 					break;
 				}
@@ -236,7 +253,8 @@ define(['modules/BezierPoint', 'jquery'], function(BezierPoint, $){
 
 			_this.createLUT();
 
-		}).on('mouseleave', function(evt){
+		});
+		this.ctx.canvas.addEventListener('mouseleave', function(evt){
 
 			if (draging) {
 				if (evt.offsetX < 0 || evt.offsetX > _this.cw) {
@@ -346,17 +364,19 @@ define(['modules/BezierPoint', 'jquery'], function(BezierPoint, $){
 
 			draging = dragReady = dragCP = false;
 
-		}).on('click', function(evt){
+		});
+		this.ctx.canvas.addEventListener('click', function(evt){
 			if (keys[16] && !dragCP) {
 				_this.points[dragReady].collapse();
 				_this.draw();
 				_this.createLUT();
 			}
-		}).on('dblclick', function(evt){
+		});
+		this.ctx.canvas.addEventListener('dblclick', function(evt){
 			_this.points.splice(dragReady, 1);
 			draging = dragReady = dragCP = false;
 			dist = 1000;
-			$(this).css('cursor', 'initial');
+			this.style.cursor = 'initial';
 			_this.draw();
 			_this.createLUT();
 		});
@@ -364,7 +384,7 @@ define(['modules/BezierPoint', 'jquery'], function(BezierPoint, $){
 	};
 	Curve.prototype.addPoint = function(x, y) {
 		
-		this.points.push(new BezierPoint(x, y, this.ctx, this.color, this.cpDist));
+		this.points.push(new BezierPoint(x, y, this.ctx, this.pointColor, this.pointSize, this.cpDist));
 
 		this.points.sort(function(a, b){
 			return a.position.x - b.position.x;
@@ -378,12 +398,20 @@ define(['modules/BezierPoint', 'jquery'], function(BezierPoint, $){
 		}
 
 	};
-	Curve.prototype.setColor = function(color) {
+	Curve.prototype.setPointStyle = function(color, size) {
 		
 		for (var i = 0; i < this.points.length; i++) {
-			this.points[i].setColor(color);
-			this.color = color;
+			this.points[i].setPointStyle(color, size);
+			this.pointColor = color;
+			this.pointSize = size;
 		}
+		this.draw();
+
+	};
+	Curve.prototype.setLineStyle = function(color, width) {
+		
+		this.lineColor = color;
+		this.lineWidth = width;
 		this.draw();
 
 	};
@@ -421,7 +449,8 @@ define(['modules/BezierPoint', 'jquery'], function(BezierPoint, $){
 			this.ctx.stroke();
 		}
 
-		this.ctx.strokeStyle = '#fff';
+		this.ctx.strokeStyle = this.lineColor;
+		this.ctx.lineWidth = this.lineWidth;
 
 		this.ctx.beginPath();
 		this.ctx.moveTo(this.points[0].position.x, this.points[0].position.y);
