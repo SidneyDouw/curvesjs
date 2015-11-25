@@ -1,8 +1,8 @@
 {
-  "name": "curveEditor",
-  "version": "0.0.1",
-  "description": "",
-  "main": "gulp-config.js",
+  "name": "curves",
+  "version": "1.0.0",
+  "description": "bézier curve editor for animations to manipulate values over time",
+  "main": "dist/curves.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,7 +16,6 @@
     "gulp-connect-php": "~0.0.7",
     "gulp-csslint": "~0.2.0",
     "gulp-cssnext": "~1.0.1",
-    "gulp-exec": "~2.1.2",
     "gulp-jshint": "~1.12.0",
     "gulp-less": "~3.0.5",
     "gulp-minify-css": "~1.2.1",
@@ -26,5 +25,18 @@
     "gulp-watch": "~4.3.5",
     "jshint-stylish": "~2.1.0",
     "main-bower-files": "~2.9.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SidneyDouw/curves.git"
+  },
+  "keywords": [
+    "Bézier",
+    "Curves",
+    "Animation"
+  ],
+  "bugs": {
+    "url": "https://github.com/SidneyDouw/curves/issues"
+  },
+  "homepage": "https://github.com/SidneyDouw/curves#readme"
 }

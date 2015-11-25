@@ -10,13 +10,13 @@ module.exports = {
 			font:  'src/font/**/*'
 		},
 		dest: {
-			build: 'build/',
-			php:   'build/php/',
-			css:   'build/css/',
-			js:    'build/js/',
-			img:   'build/img/',
-			font:  'build/font/',
-			libs:  'build/js/libs/'
+			build: 'test/',
+			php:   'test/php/',
+			css:   'test/css/',
+			js:    'test/js/',
+			img:   'test/img/',
+			font:  'test/font/',
+			libs:  'test/js/libs/'
 		}
 	},
 	options: {

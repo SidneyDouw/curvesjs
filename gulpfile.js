@@ -22,29 +22,12 @@ var gulp 			= require('gulp'),
 
 var makeSourcemap = util.env.sm ? true : false;
 
-var buildScript = {
-    paths: {
-    	jquery: "../../bower_components/jquery/dist/jquery.min",
-    	almond: "../../bower_components/almond/almond"
-    },
-
-    include: ['almond', 'script'],
-    exclude: ['jquery'],
-
-    out: 'script.min.js',
-    wrap: {
-    	startFile: "wrapS.start",
-    	endFile: "wrapS.end"
-    }
-}
 var buildLib1 = {
     paths: {
-    	jquery: "../../bower_components/jquery/dist/jquery.min",
     	almond: "../../bower_components/almond/almond"
     },
 
     include: ['almond', 'main'],
-    exclude: ['jquery'],
 
     out: 'curves.min.js',
     wrap: {
@@ -54,12 +37,10 @@ var buildLib1 = {
 }
 var buildLib2 = {
     paths: {
-    	jquery: "../../bower_components/jquery/dist/jquery.min",
     	almond: "../../bower_components/almond/almond"
     },
 
     include: ['almond', 'main'],
-    exclude: ['jquery'],
 
     optimize: 'none',
 
@@ -116,25 +97,17 @@ gulp.task('js', function() {
 	}))
 	.pipe(jshint.reporter(jsStylish));
 
-	return gulp.src('src/js/script.js')
-		.pipe(makeSourcemap ? sourcemaps.init() : util.noop())
-        .pipe(rjs(buildScript).on('error', function(err) {
-			errorLog(err);
-		}))
-        .pipe(makeSourcemap ? sourcemaps.write('./') : util.noop())
-        .pipe(gulp.dest(dest.js))
-        .pipe(browserSync.reload({stream: true}));
-});
-gulp.task('buildLib', function() {	
 	gulp.src('src/js/main.js')
 	.pipe(sourcemaps.init())
-        .pipe(rjs(buildLib1))
-        .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest('dist/'));
+    .pipe(rjs(buildLib1))
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest('dist/'))
+    .pipe(gulp.dest('test/js/lib/'));
 
-        gulp.src('src/js/main.js')
-        .pipe(rjs(buildLib2))
-        .pipe(gulp.dest('dist/'));
+    gulp.src('src/js/main.js')
+    .pipe(rjs(buildLib2))
+    .pipe(gulp.dest('dist/'));
+
 });
 
 gulp.task('img', function() {	
@@ -158,7 +131,7 @@ gulp.task('build', ['delete'], function(){
 
 gulp.task('browserSync', ['build'], function(){
 	php.server({
-		base: './build',
+		base: './test',
 		port: 3030,
 		keepalive: true
 	});

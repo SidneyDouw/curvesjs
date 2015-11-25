@@ -1,6 +1,6 @@
 {
-  "name": "template",
-  "description": "",
+  "name": "curves",
+  "description": "bézier curve editor for animations to manipulate values over time",
   "main": "build/index.php",
   "authors": [
     "Sidney Douw"
@@ -10,7 +10,7 @@
     "amd",
     "globals"
   ],
-  "homepage": "",
+  "homepage": "https://github.com/SidneyDouw/curves.git#readme",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -19,15 +19,17 @@
     "tests"
   ],
   "dependencies": {
-    "jquery": "~2.1.4",
     "almond": "~0.3.1"
   },
   "overrides": {
-    "jquery": {
-      "main": "dist/*.min.js"
-    },
     "almond": {
       "ignore": true
     }
-  }
+  },
+  "version": "1.0.0",
+  "keywords": [
+    "Bézier",
+    "Curves",
+    "Animation"
+  ]
 }
