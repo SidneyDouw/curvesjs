@@ -19,7 +19,7 @@ Usage
 
   function loop() {
     
-    var currentValue = curve.xGetY(frame)
+    var currentValue = curve.xGetY(frame);
     
     frame++;
     requestAnimationFrame(loop);
