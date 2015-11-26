@@ -636,8 +636,10 @@ define('modules/Curve',['modules/BezierPoint'], function(BezierPoint){
 		
 		this.ctx.canvas.addEventListener('mousemove', function(evt){
 
-			x = evt.clientX - this.offsetLeft;
-			y = evt.clientY - this.offsetTop;
+			var bbox = this.getBoundingClientRect();
+
+			x = evt.clientX - bbox.left;
+			y = evt.clientY - bbox.top;
 
 			_this.mouseX = x;
 			_this.mouseY = y;
@@ -765,6 +767,7 @@ define('modules/Curve',['modules/BezierPoint'], function(BezierPoint){
 					draging = true;
 					this.style.cursor = 'pointer';
 					_this.draw();
+					_this.events.onnewpoint ? _this.events.onnewpoint() : null;
 				}
 			}
 
@@ -905,6 +908,7 @@ define('modules/Curve',['modules/BezierPoint'], function(BezierPoint){
 				_this.points[dragReady].collapse();
 				_this.draw();
 				_this.createLUT();
+				_this.events.ontogglecontrol ? _this.events.ontogglecontrol() : null;
 			}
 		});
 		this.ctx.canvas.addEventListener('dblclick', function(evt){
@@ -914,6 +918,7 @@ define('modules/Curve',['modules/BezierPoint'], function(BezierPoint){
 			this.style.cursor = 'initial';
 			_this.draw();
 			_this.createLUT();
+			_this.events.onremovepoint ? _this.events.onremovepoint() : null;
 		});
 
 	};

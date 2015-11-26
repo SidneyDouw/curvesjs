@@ -27,10 +27,26 @@
 		var span = document.querySelector('span');
 
 		var curve = new Curve(ctx, lengthInFrames);
-			curve.setPointStyle('#0ff', 6);
+			curve.setPointStyle('#f00', 8);
 
 			curve.on('mousemove', function() {
 				span.innerHTML = 'X: ' + this.mouseX + ', Y: ' + this.mouseY;
+			});
+
+			curve.on('drag', function() {
+				console.log('point is being dragged');
+			});
+
+			curve.on('newpoint', function() {
+				console.log('point has been created');
+			});
+
+			curve.on('removepoint', function() {
+				console.log('point has beed removed');
+			});
+
+			curve.on('togglecontrol', function() {
+				console.log('toggled controlpoints');
 			});
 
 		var currentFrame = -1;
