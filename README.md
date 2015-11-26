@@ -18,17 +18,17 @@ Initialization
 Usage
 -----
 ```js
-  var frame = -1;
+  var currentFrame = 0;
 
   function loop() {
   
-    if (frame > lengthInFrames) {
-      frame = 0
+    if (currentFrame > lengthInFrames) {
+      currentFrame = 0
     }
     
-    var currentValue = curve.xGetY(frame);
+    var currentValue = curve.xGetY(currentFrame);
     
-    frame++;
+    currentFrame++;
     requestAnimationFrame(loop);
   }
 ```
