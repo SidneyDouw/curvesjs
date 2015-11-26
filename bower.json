@@ -5,7 +5,7 @@
   "authors": [
     "Sidney Douw"
   ],
-  "license": "BSD-2-Clause",
+  "license": "MIT",
   "moduleType": [
     "amd",
     "globals"
