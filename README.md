@@ -33,7 +33,7 @@ Usage
   }
 ```
 
-![Curves.js](http://www.tuxpaint.org/gallery/antonis/Some_Music.png)
+![Curves.js](http://sidneydouw.ddns.net:1234/curves.js/curves.js.png)
 
 Click anywhere to create a new point
 
