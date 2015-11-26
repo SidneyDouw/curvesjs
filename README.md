@@ -61,5 +61,17 @@ Methods
 #### .on(event, callback)
 
     adds custom functions on given event
+    
+#### Events
+    
+    'mousemove': fires whenever the mouse moves over the canvas
+    
+    'drag': fires whenever a point changes position
+    
+    'newpoint': fires whenever a new point is created
+    
+    'removepoint': fires whenever an existing point is removed
+    
+    'togglecontrol': fires whenever a points controlpoints are toggled on or off
 
   
