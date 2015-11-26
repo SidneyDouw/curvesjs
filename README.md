@@ -6,10 +6,13 @@ can be used from a script tag or as AMD module
 Initialization
 --------------
 ```js
-  var canvasContext = document.querySelector('canvas').getContext("2d");
+  var context = document.querySelector('canvas').getContext("2d");
+      context.canvas.width = 280;
+      context.canvas.height = 140;
+      
   var lengthInFrames = 300;
 
-  var curve = new Curve(canvasContext, lengthInFrames);
+  var curve = new Curve(context, lengthInFrames);
 ```
 
 Usage
@@ -18,6 +21,10 @@ Usage
   var frame = -1;
 
   function loop() {
+  
+    if (frame > lengthInFrames) {
+      frame = 0
+    }
     
     var currentValue = curve.xGetY(frame);
     
@@ -25,3 +32,26 @@ Usage
     requestAnimationFrame(loop);
   }
 ```
+
+![Curves.js](http://www.tuxpaint.org/gallery/antonis/Some_Music.png)
+
+Shift-click to toggle control points
+
+Hold alt while dragging to snap to grid
+
+Methods
+-------
+
+#### .setPointStyle(color, pointSize)
+    
+    Changes point color and size to the desired values
+    
+#### .setLineStyle(color, lineWidth)
+
+    Changes line color and width to the desired values
+    
+#### .on(event, callback)
+
+    adds custom functions on given event
+
+  
