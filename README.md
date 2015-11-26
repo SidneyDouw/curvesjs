@@ -43,6 +43,8 @@ Shift-click to toggle control points
 
 Hold alt while dragging to snap to grid
 
+Hold shift while dragging to move controlpoints individually
+
 Methods
 -------
 
