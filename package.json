@@ -28,7 +28,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SidneyDouw/curves.git"
+    "url": "git+https://github.com/SidneyDouw/curves.js"
   },
   "keywords": [
     "Bézier",
@@ -36,7 +36,7 @@
     "Animation"
   ],
   "bugs": {
-    "url": "https://github.com/SidneyDouw/curves/issues"
+    "url": "https://github.com/SidneyDouw/curves.js/issues"
   },
-  "homepage": "https://github.com/SidneyDouw/curves#readme"
+  "homepage": "https://github.com/SidneyDouw/curves.js#readme"
 }
