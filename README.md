@@ -35,12 +35,20 @@ Usage
 
 ![Curves.js](http://www.tuxpaint.org/gallery/antonis/Some_Music.png)
 
+Click and drag to create a new point
+
+Doubleclick to remove a point
+
 Shift-click to toggle control points
 
 Hold alt while dragging to snap to grid
 
 Methods
 -------
+
+#### .xGetY(xValue)
+
+    returns the curves Y-value for a given X-value
 
 #### .setPointStyle(color, pointSize)
     
