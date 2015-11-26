@@ -35,7 +35,7 @@ Usage
 
 ![Curves.js](http://www.tuxpaint.org/gallery/antonis/Some_Music.png)
 
-Click and drag to create a new point
+Click anywhere to create a new point
 
 Doubleclick to remove a point
 
