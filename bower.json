@@ -10,7 +10,7 @@
     "amd",
     "globals"
   ],
-  "homepage": "https://github.com/SidneyDouw/curves.git#readme",
+  "homepage": "https://github.com/SidneyDouw/curves.js#readme",
   "ignore": [
     "**/.*",
     "node_modules",
