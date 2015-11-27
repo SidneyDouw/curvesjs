@@ -5,6 +5,13 @@ can be used from a script tag or as AMD module
 
 try it out [here](http://sidneydouw.github.io/curves.js/)
 
+Install
+-------
+
+```
+  bower install curvesjs
+```
+
 Initialization
 --------------
 ```js
