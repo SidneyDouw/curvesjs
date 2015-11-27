@@ -1,7 +1,7 @@
 {
-  "name": "curves",
+  "name": "curvesjs",
   "description": "bézier curve editor for animations to manipulate values over time",
-  "main": "build/index.php",
+  "main": "dist/curves.js",
   "authors": [
     "Sidney Douw"
   ],
@@ -10,7 +10,7 @@
     "amd",
     "globals"
   ],
-  "homepage": "https://github.com/SidneyDouw/curves.js#readme",
+  "homepage": "https://github.com/SidneyDouw/curvesjs#readme",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -18,7 +18,7 @@
     "test",
     "tests"
   ],
-  "dependencies": {
+  "devDependencies": {
     "almond": "~0.3.1"
   },
   "overrides": {
