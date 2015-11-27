@@ -17,7 +17,7 @@
 
 	<script type="text/javascript">
 
-		var lengthInFrames = 60;
+		var lengthInFrames = 120;
 
 		var ctx = document.querySelector('canvas').getContext("2d");
 			ctx.canvas.width = 200*4;
@@ -27,7 +27,8 @@
 		var span = document.querySelector('span');
 
 		var curve = new Curve(ctx, lengthInFrames);
-			curve.setPointStyle('#f00', 8);
+			curve.setPointStyle('#222', 8);
+			curve.setLineStyle('#f5663F', 2);
 
 			curve.on('mousemove', function() {
 				span.innerHTML = 'X: ' + this.mouseX + ', Y: ' + this.mouseY;
@@ -59,7 +60,7 @@
 
 			var curveValue = curve.xGetY(currentFrame);
 
-			div.style.left = curveValue*90 + '%';
+			div.style.left = curveValue*93 + '%';
 
 			currentFrame++;
 
