@@ -12,7 +12,6 @@ var gulp 			= require('gulp'),
 	jshint			= require('gulp-jshint'),
 	jsStylish 		= require('jshint-stylish'),
 	mainBowerFiles 	= require('main-bower-files'),
-	php 			= require('gulp-connect-php'),
 	browserSync		= require('browser-sync'),
 	config 			= require('./gulp-config.js'),
 	src 			= config.paths.src,
@@ -130,13 +129,10 @@ gulp.task('build', ['delete'], function(){
 });
 
 gulp.task('browserSync', ['build'], function(){
-	php.server({
-		base: './test',
-		port: 3030,
-		keepalive: true
-	});
 	browserSync({
-		proxy: 'localhost:3030',
+		server: {
+			baseDir: './test'
+		},
 	    browser: 'google chrome',
 	    notify: false
 	});
