@@ -1,5 +1,6 @@
 {
   "name": "curvesjs",
+  "version": "1.0.3",
   "description": "bézier curve editor for animations to manipulate values over time",
   "main": "dist/curves.js",
   "authors": [
@@ -12,10 +13,7 @@
   ],
   "homepage": "https://github.com/SidneyDouw/curvesjs#readme",
   "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "tests",
+    ".*",
     "README.md",
     "wrap.*",
     "*.js",
@@ -29,7 +27,6 @@
       "ignore": true
     }
   },
-  "version": "1.0.2",
   "keywords": [
     "Bézier",
     "Curves",

@@ -2,7 +2,7 @@
 module.exports = {
 	paths: {
 		src: {
-			index: 'src/index.php',
+			index: 'src/index.*',
 			php:   'src/php/**/*.php',
 			less:  'src/css/**/*.less',
 			js:    'src/js/**/*.js',
