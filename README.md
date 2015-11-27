@@ -3,6 +3,8 @@ bézier curve editor for animations to manipulate values over time
 
 can be used from a script tag or as AMD module
 
+try it out [here](http://sidneydouw.github.io/curves.js/)
+
 Initialization
 --------------
 ```js
