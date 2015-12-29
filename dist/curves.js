@@ -537,6 +537,8 @@ define('modules/Curve',['modules/BezierPoint'], function(BezierPoint){
 
 	function Curve(context, interval, cpDist) {
 
+		this.BezierPoint = BezierPoint;
+
 		this.cpDist = cpDist ? cpDist : context.canvas.width * 0.2;
 
 		this.pointColor = '#f00';
