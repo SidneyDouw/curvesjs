@@ -1,6 +1,6 @@
 {
   "name": "curvesjs",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "bézier curve editor for animations to manipulate values over time",
   "main": "dist/curves.js",
   "authors": [
