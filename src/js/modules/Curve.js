@@ -1,6 +1,8 @@
-define(['modules/BezierPoint'], function(BezierPoint){
+import BezierPoint from "./BezierPoint";
 
-	function Curve(context, interval, cpDist) {
+export default class Curve {
+
+	constructor(context, interval, cpDist) {
 
 		this.BezierPoint = BezierPoint;
 
@@ -33,18 +35,19 @@ define(['modules/BezierPoint'], function(BezierPoint){
 		this.draw();
 
 	}
-	Curve.prototype.xGetY = function(frame) {
 
-		var tolerance = 0.0001;
+	xGetY(frame) {
+
+		let tolerance = 0.0001;
 		
-		var iMin = 0;
-		var iMax = 5000;
-		var key = (iMin+iMax)/2;
+		let iMin = 0;
+		let iMax = 5000;
+		let key = (iMin+iMax)/2;
 
-		var xTarget = frame/this.interval;
-		var xCurrent = this.lookupX[key];
+		let xTarget = frame/this.interval;
+		let xCurrent = this.lookupX[key];
 
-		var i = 0;
+		let i = 0;
 
 		while (Math.abs(xTarget-xCurrent) > tolerance){
 			i++;
@@ -64,46 +67,46 @@ define(['modules/BezierPoint'], function(BezierPoint){
 
 		return this.lookupY[key];
 
-	};
-	Curve.prototype.createLUT = function() {
+	}
+
+	createLUT() {
 		
 		this.lookupX = [];
 		this.lookupY = [];
 
-	//	this.ctx.fillStyle = '#a50';
-
 		//Percent Based Tesselation
-		for (var i = 1; i < this.points.length; i++) {
-			var p1 = this.points[i-1];
-			var p2 = this.points[i];
-			var pct = (p2.position.x/this.cw) - (p1.position.x/this.cw);
-			for (var t = 0; t < 1; t+=1/(5000*pct)) {
-				var x = (Math.pow((1-t),3)*p1.position.x) + (3*Math.pow((1-t),2)*t*p1.cp2.x) + (3*(1-t)*Math.pow(t,2)*p2.cp1.x) + (Math.pow(t,3)*p2.position.x);
-				var y = (Math.pow((1-t),3)*p1.position.y) + (3*Math.pow((1-t),2)*t*p1.cp2.y) + (3*(1-t)*Math.pow(t,2)*p2.cp1.y) + (Math.pow(t,3)*p2.position.y);
+		for (let i = 1; i < this.points.length; i++) {
+			let p1 = this.points[i-1];
+			let p2 = this.points[i];
+			let pct = (p2.position.x/this.cw) - (p1.position.x/this.cw);
+			for (let t = 0; t < 1; t+=1/(5000*pct)) {
+				let x = (Math.pow((1-t),3)*p1.position.x) + (3*Math.pow((1-t),2)*t*p1.cp2.x) + (3*(1-t)*Math.pow(t,2)*p2.cp1.x) + (Math.pow(t,3)*p2.position.x);
+				let y = (Math.pow((1-t),3)*p1.position.y) + (3*Math.pow((1-t),2)*t*p1.cp2.y) + (3*(1-t)*Math.pow(t,2)*p2.cp1.y) + (Math.pow(t,3)*p2.position.y);
 				this.lookupX.push(x/this.cw);
 				this.lookupY.push(-y/this.ch+1);
-	//			this.ctx.fillRect(x, y, 3, 3);
 			}
 		}
 
-	};
-	Curve.prototype.on = function(event, func) {
-		this.events['on'+event] = func.bind(this);
-	};
-	Curve.prototype.canvasEvents = function() {
+	}
 
-		var x,
+	on(event, func) {
+		this.events['on'+event] = func.bind(this);
+	}
+
+	canvasEvents() {
+
+		let x,
 			y,
 			dist,
 			dragReady,
 			dragCP,
 			draging;
 
-		var _this = this;
+		let _this = this;
 		
 		this.ctx.canvas.addEventListener('mousemove', function(evt){
 
-			var bbox = this.getBoundingClientRect();
+			let bbox = this.getBoundingClientRect();
 
 			x = evt.clientX - bbox.left;
 			y = evt.clientY - bbox.top;
@@ -111,8 +114,8 @@ define(['modules/BezierPoint'], function(BezierPoint){
 			_this.mouseX = x;
 			_this.mouseY = y;
 
-			for (var i = 0; i < _this.points.length; i++) {
-				var p = _this.points[i];
+			for (let i = 0; i < _this.points.length; i++) {
+				let p = _this.points[i];
 
 				if (!draging) {
 
@@ -148,11 +151,11 @@ define(['modules/BezierPoint'], function(BezierPoint){
 			}
 
 			if (keys[18]) {
-				var deltaW = _this.cw / 20;
-				var deltaH = _this.ch/ 10;
+				let deltaW = _this.cw / 20;
+				let deltaH = _this.ch/ 10;
 
-				var posX = Math.floor((x+deltaW/2) / deltaW);
-				var posY = Math.floor((y+deltaH/2) / deltaH);
+				let posX = Math.floor((x+deltaW/2) / deltaW);
+				let posY = Math.floor((y+deltaH/2) / deltaH);
 
 				x = deltaW * posX;
 				y = deltaH * posY;
@@ -198,7 +201,7 @@ define(['modules/BezierPoint'], function(BezierPoint){
 					_this.points[dragReady].cp2.x = _this.points[dragReady].position.x + _this.points[dragReady].v2x;
 					_this.points[dragReady].cp2.y = _this.points[dragReady].position.y + _this.points[dragReady].v2y;
 
-					var temp;
+					let temp;
 
 					if (_this.points[dragReady-1] && _this.points[dragReady+1]) {
 						if (_this.points[dragReady].position.x > _this.points[dragReady+1].position.x) {
@@ -246,8 +249,8 @@ define(['modules/BezierPoint'], function(BezierPoint){
 				dragReady = dragCP = false;
 			}
 
-			for (var i = 0; i < _this.points.length; i++) {
-				var p = _this.points[i];
+			for (let i = 0; i < _this.points.length; i++) {
+				let p = _this.points[i];
 				dist = Math.sqrt((x-p.position.x)*(x-p.position.x) + (y-p.position.y)*(y-p.position.y));
 				if (dist <= _this.pointSize/2+2) {
 					this.style.cursor = 'pointer';
@@ -388,8 +391,9 @@ define(['modules/BezierPoint'], function(BezierPoint){
 			_this.events.onremovepoint ? _this.events.onremovepoint() : null;
 		});
 
-	};
-	Curve.prototype.addPoint = function(x, y) {
+	}
+
+	addPoint(x, y) {
 		
 		this.points.push(new BezierPoint(x, y, this.ctx, this.pointColor, this.pointSize, this.cpDist));
 
@@ -397,45 +401,48 @@ define(['modules/BezierPoint'], function(BezierPoint){
 			return a.position.x - b.position.x;
 		});
 
-		for (var i = 0; i < this.points.length; i++) {
-			var p = this.points[i];
+		for (let i = 0; i < this.points.length; i++) {
+			let p = this.points[i];
 			if (x == p.position.x && y == p.position.y) {
 				return i;
 			}
 		}
 
-	};
-	Curve.prototype.setPointStyle = function(color, size) {
+	}
+
+	setPointStyle(color, size) {
 		
-		for (var i = 0; i < this.points.length; i++) {
+		for (let i = 0; i < this.points.length; i++) {
 			this.points[i].setPointStyle(color, size);
 			this.pointColor = color;
 			this.pointSize = size;
 		}
 		this.draw();
 
-	};
-	Curve.prototype.setLineStyle = function(color, width) {
+	}
+
+	setLineStyle(color, width) {
 		
 		this.lineColor = color;
 		this.lineWidth = width;
 		this.draw();
 
-	};
-	Curve.prototype.draw = function() {
+	}
+
+	draw() {
 		
 		this.ctx.clearRect(0, 0, this.cw, this.ch);
 		
 		this.ctx.strokeStyle = '#444';
 		this.ctx.lineWidth = 1;
 
-		for (i = 1; i < 10; i++) {
+		for (let i = 1; i < 10; i++) {
 			this.ctx.beginPath();
 			this.ctx.moveTo((this.cw/10)*i-0.5, 0);
 			this.ctx.lineTo((this.cw/10)*i-0.5, this.ch);
 			this.ctx.stroke();
 		}
-		for (i = 1; i < 5; i++) {
+		for (let i = 1; i < 5; i++) {
 			this.ctx.beginPath();
 			this.ctx.moveTo(0, (this.ch/5)*i-0.5);
 			this.ctx.lineTo(this.cw, (this.ch/5)*i-0.5);
@@ -443,13 +450,13 @@ define(['modules/BezierPoint'], function(BezierPoint){
 		}
 
 		this.ctx.lineWidth = 0.5;
-		for (i = 1; i < 20; i++) {
+		for (let i = 1; i < 20; i++) {
 			this.ctx.beginPath();
 			this.ctx.moveTo((this.cw/20)*i-0.5, 0);
 			this.ctx.lineTo((this.cw/20)*i-0.5, this.ch);
 			this.ctx.stroke();
 		}
-		for (i = 1; i < 10; i++) {
+		for (let i = 1; i < 10; i++) {
 			this.ctx.beginPath();
 			this.ctx.moveTo(0, (this.ch/10)*i-0.5);
 			this.ctx.lineTo(this.cw, (this.ch/10)*i-0.5);
@@ -461,28 +468,25 @@ define(['modules/BezierPoint'], function(BezierPoint){
 
 		this.ctx.beginPath();
 		this.ctx.moveTo(this.points[0].position.x, this.points[0].position.y);
-		for (i = 1; i < this.points.length; i++) {
-			var p = this.points[i];
-			var pP = this.points[i-1];
+		for (let i = 1; i < this.points.length; i++) {
+			let p = this.points[i];
+			let pP = this.points[i-1];
 			this.ctx.bezierCurveTo(pP.cp2.x, pP.cp2.y, p.cp1.x, p.cp1.y, p.position.x, p.position.y);
 		}
 		this.ctx.stroke();
 
-		for (var i = 0; i < this.points.length; i++) {
+		for (let i = 0; i < this.points.length; i++) {
 			this.points[i].draw();
 		}
 
-	};
+	}
+}
 
 
-	var keys = [];
-	window.addEventListener('keydown', function(e){
-		keys[e.keyCode] = true;
-	});
-	window.addEventListener('keyup', function(e){
-		delete keys[e.keyCode];
-	});
-
-	return Curve;
-
+const keys = [];
+window.addEventListener('keydown', function(e){
+	keys[e.keyCode] = true;
+});
+window.addEventListener('keyup', function(e){
+	delete keys[e.keyCode];
 });

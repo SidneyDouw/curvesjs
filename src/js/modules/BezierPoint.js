@@ -1,6 +1,9 @@
-define(['modules/Point'], function(Point){
+import Point from "./Point";
 
-	function BezierPoint(x, y, context, color, size, cpDist) {
+
+export default class BezierPoint {
+
+	constructor(x, y, context, color, size, cpDist) {
 
 		this.cpDist = cpDist;
 
@@ -17,8 +20,9 @@ define(['modules/Point'], function(Point){
 		this.collapsed = false;
 
 	}
-	BezierPoint.prototype.collapse = function() {
-		
+
+	collapse() {
+	
 		if (!this.collapsed) {
 			this.collapsed = true;
 			this.cp1.x = this.cp2.x = this.position.x;
@@ -29,8 +33,10 @@ define(['modules/Point'], function(Point){
 			this.cp2.x = this.position.x + this.cpDist;
 		}
 
-	};
-	BezierPoint.prototype.move = function() {
+	}
+
+	move() {
+
 		if (!this.collapsed) {
 			this.v1x = this.cp1.x - this.position.x;
 			this.v1y = this.cp1.y - this.position.y;
@@ -40,16 +46,19 @@ define(['modules/Point'], function(Point){
 			this.v1x = this.v1y = this.v2x = this.v2y = 0;
 		}
 
-	};
-	BezierPoint.prototype.setPointStyle = function(color, size) {
+	}
+
+	setPointStyle(color, size) {
+
 		this.position.color = color;
 		this.cp1.color = color;
 		this.cp2.color = color;
 		this.position.r = size/2;
 		this.cp1.r = size/2;
 		this.cp2.r = size/2;
-	};
-	BezierPoint.prototype.draw = function() {
+	}
+
+	draw() {
 
 		this.ctx.lineWidth = 0.2;
 
@@ -67,8 +76,5 @@ define(['modules/Point'], function(Point){
 		this.cp1.draw();
 		this.cp2.draw();
 
-	};
-
-	return BezierPoint;
-
-});
+	}
+}
