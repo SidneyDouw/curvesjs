@@ -3,9 +3,9 @@
 <head>
 	<title>Curves</title>
 
-	<link rel="stylesheet" type="text/css" href="css/styles.min.css">
+	<link rel="stylesheet" href="css/styles.css">
 
-	<script type="text/javascript" src="js/lib/curves.min.js"></script>
+	<script type="text/javascript" src="js/curves.min.js"></script>
 </head>
 <body>
 
@@ -17,18 +17,18 @@
 
 	<script type="text/javascript">
 
-		var lengthInFrames = 120;
+		let lengthInFrames = 120; // 2 seconds
 
-		var ctx = document.querySelector('canvas').getContext("2d");
+		let ctx = document.querySelector('canvas').getContext("2d");
 			ctx.canvas.width = 200*4;
 			ctx.canvas.height = 100*4;
 
-		var div = document.querySelector('div');
-		var span = document.querySelector('span');
+		let div = document.querySelector('div');
+		let span = document.querySelector('span');
 
-		var curve = new Curve(ctx, lengthInFrames);
-			curve.setPointStyle('#222', 8);
-			curve.setLineStyle('#f5663F', 2);
+		let curve = new Curve(ctx, lengthInFrames);
+			curve.setPointStyle('#fff', 8);
+			curve.setLineStyle('#28d', 2);
 
 			curve.on('mousemove', function() {
 				span.innerHTML = 'X: ' + this.mouseX + ', Y: ' + this.mouseY;
@@ -50,7 +50,7 @@
 				console.log('toggled controlpoints');
 			});
 
-		var currentFrame = -1;
+		let currentFrame = 0;
 
 		function loop() {
 
@@ -58,7 +58,7 @@
 				currentFrame = 0;
 			}
 
-			var curveValue = curve.xGetY(currentFrame);
+			let curveValue = curve.xGetY(currentFrame);
 
 			div.style.left = curveValue*93 + '%';
 

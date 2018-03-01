@@ -1,163 +1,101 @@
-var gulp 			= require('gulp'),
-	del 			= require('del'),
-	rjs 			= require('gulp-requirejs-optimize'),
-	util			= require('gulp-util'),
-	watch 			= require('gulp-watch'),
- 	sourcemaps 		= require('gulp-sourcemaps'),
-	concat 			= require('gulp-concat'),
-	less 			= require('gulp-less'),
-	cssnext 		= require('gulp-cssnext'),
-	csslint			= require('gulp-csslint'),
-	minifyCss		= require('gulp-minify-css'),
-	jshint			= require('gulp-jshint'),
-	jsStylish 		= require('jshint-stylish'),
-	mainBowerFiles 	= require('main-bower-files'),
-	browserSync		= require('browser-sync'),
-	config 			= require('./gulp-config.js'),
-	src 			= config.paths.src,
-	dest 			= config.paths.dest,
-	options 		= config.options;
+const gulp 	= require('gulp');
+const plugins = require('gulp-load-plugins')({pattern: ['*'],
+											rename: {'jshint': 'jshintG'}});
+const config 	= require('./gulp-config.js');
 
 
-var makeSourcemap = util.env.sm ? true : false;
 
-var buildLib1 = {
-    paths: {
-    	almond: "../../bower_components/almond/almond"
-    },
+gulp.task('plugins', function() {
+	console.log(plugins);
+});
 
-    include: ['almond', 'main'],
 
-    out: 'curves.min.js',
-    wrap: {
-    	startFile: "wrap.start",
-    	endFile: "wrap.end"
-    }
-}
-var buildLib2 = {
-    paths: {
-    	almond: "../../bower_components/almond/almond"
-    },
+gulp.task('clear', clear);
 
-    include: ['almond', 'main'],
+gulp.task('html', html);
+gulp.task('less', less);
+gulp.task('js', js);
 
-    optimize: 'none',
+gulp.task('build', ['clear', 'html', 'less', 'js']);
 
-    out: 'curves.js',
-    wrap: {
-    	startFile: "wrap.start",
-    	endFile: "wrap.end"
-    }
+gulp.task('browserSync', ['build'], browserSync);
+
+gulp.task('default', ['build', 'browserSync'], function() {
+
+	gulp.watch(config.paths.src.html, ['html']);
+	gulp.watch(config.paths.src.less, ['less']);
+	gulp.watch(config.paths.src.js, ['js']);
+
+});
+
+// Gulp Functions
+
+
+
+function browserSync() {
+
+	plugins.browserSync.init(config.browserSync);
+    
 }
 
 
-gulp.task('test', function(){
-	console.log("Gulp is up and running. Happy Coding!");
-});
 
-gulp.task('delete', function(cb) {
-	return del([dest.build]);
-});
+function clear() {
 
-gulp.task('index', function() {
-	gulp.src(src.index)
-	.pipe(gulp.dest(dest.build))
-	.pipe(browserSync.reload({stream: true}));
-});
+	plugins.del(config.paths.dest.root);
+	plugins.del(config.paths.test.root);
 
-gulp.task('php', function() {
-	gulp.src(src.php)
-	.pipe(gulp.dest(dest.php))
-	.pipe(browserSync.reload({stream: true}));
-});
+}
 
-gulp.task('css', function() {
-	gulp.src(src.less)
-	.pipe(less().on('error', function(err) {
-		errorLog(err);
+
+
+function html() {
+
+	return gulp.src(config.paths.src.html)
+	.pipe(gulp.dest(config.paths.test.root))
+	.pipe(plugins.browserSync.stream());
+
+}
+
+
+
+function js() {
+
+	gulp.src(config.paths.src.js)
+	.pipe(plugins.jshint({
+		esversion: 6
 	}))
-	.pipe(makeSourcemap ? sourcemaps.init() : util.noop())
-	.pipe(cssnext(options.cssnext).on('error', function(err) {
-		errorLog(err);
+	.pipe(plugins.jshint.reporter('jshint-stylish'));
+
+	return gulp.src(config.paths.src.jsMain)
+	.pipe(plugins.webpackStream(config.webpack, plugins.webpack))
+	.on('error', function() {
+		this.emit('end');
+	})
+	.pipe(gulp.dest(config.paths.dest.root))
+	.pipe(gulp.dest(config.paths.test.js))
+	.pipe(plugins.browserSync.stream());
+
+}
+
+
+
+function less() {
+
+    return gulp.src(config.paths.src.less)
+	.pipe(plugins.plumber(function(error) {
+		plugins.util.log(plugins.util.colors.red('--------------------------------------------------\n\n'))
+		plugins.util.log(plugins.util.colors.red('Error (' + error.plugin + '):\n' + error.message + '\n\n'));
+		plugins.util.log(plugins.util.colors.red('--------------------------------------------------\n'))
 	}))
-	.pipe(csslint(options.csslint))
-	.pipe(csslint.reporter())
-	.pipe(minifyCss())
-	.pipe(concat('styles.min.css'))
-	.pipe(makeSourcemap ? sourcemaps.write('./') : util.noop())
-	.pipe(gulp.dest(dest.css))
-	.pipe(browserSync.reload({stream: true}));
-});
+	.pipe(plugins.concat('styles.css'))
+	.pipe(plugins.sourcemaps.init())
+	.pipe(plugins.less())
+	.on('error', function() {
+		this.emit('end');
+	})
+	.pipe(plugins.sourcemaps.write())
+	.pipe(gulp.dest(config.paths.test.css))
+	.pipe(plugins.browserSync.stream());
 
-gulp.task('js', function() {
-	gulp.src(src.js)
-	.pipe(jshint().on('error', function(err) {
-		errorLog(err);
-	}))
-	.pipe(jshint.reporter(jsStylish));
-
-	gulp.src('src/js/main.js')
-	.pipe(sourcemaps.init())
-    .pipe(rjs(buildLib1))
-    .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('dist/'))
-    .pipe(gulp.dest('test/js/lib/'));
-
-    gulp.src('src/js/main.js')
-    .pipe(rjs(buildLib2))
-    .pipe(gulp.dest('dist/'));
-
-});
-
-gulp.task('img', function() {	
-	gulp.src(src.img)
-	.pipe(gulp.dest(dest.img));
-});
-
-gulp.task('font', function() {	
-	gulp.src(src.font)
-	.pipe(gulp.dest(dest.font));
-});
-
-gulp.task('libs', function() {
-	gulp.src(mainBowerFiles())
-	.pipe(gulp.dest(dest.libs))
-});
-
-gulp.task('build', ['delete'], function(){
-	gulp.start(['index', 'php', 'css', 'js', 'img', 'font', 'libs']);
-});
-
-gulp.task('browserSync', ['build'], function(){
-	browserSync({
-		server: {
-			baseDir: './test'
-		},
-	    browser: 'google chrome',
-	    notify: false
-	});
-});
-
-gulp.task('watch', ['browserSync'], function(){
-	watch(src.index, function(event){
-		gulp.start('index');
-	});
-	watch(src.php, function(event){
-		gulp.start('php');
-	});
-	watch(src.less, function(event){
-		gulp.start('css');
-	});
-	watch(src.js, function(event){
-		gulp.start('js');
-	});
-});
-
-gulp.task('default', ['build', 'watch'])
-
-
-function errorLog(err) {
-	console.log('- - - - - - - - - - - - - - - - - - - -\n\n'+
-				util.colors.red(err.toString())+
-				'\n\n- - - - - - - - - - - - - - - - - - - -');
-};
+}

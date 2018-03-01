@@ -14,6 +14,7 @@ Install
 
 Initialization
 --------------
+
 ```js
   var context = document.querySelector('canvas').getContext("2d");
       context.canvas.width = 280;
@@ -26,6 +27,7 @@ Initialization
 
 Usage
 -----
+
 ```js
   var currentFrame = 0;
 
